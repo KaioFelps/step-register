@@ -1,3 +1,16 @@
 {
-  "accounts": []
+  "accounts": [
+    {
+      "email": "teste@gmail.com",
+      "password": "123456",
+      "agreeToTerms": true,
+      "id": 1
+    },
+    {
+      "email": "teste2@gmail.com",
+      "password": "rengoku123",
+      "agreeToTerms": true,
+      "id": 2
+    }
+  ]
 }

@@ -1,14 +1,19 @@
 "use client"
 
-import { FormContext } from "@/contexts/formContext"
-import api from "@/libs/api"
+import { createAccountAsync, set_agreeToTerms, set_password } from "@/reducer/features/form/reducer"
+import { formSelector } from "@/reducer/features/form/selectors"
+import { store } from "@/reducer/store"
 import { yupResolver } from "@hookform/resolvers/yup"
 import clsx from "clsx"
-import { useContext, useState } from "react"
+import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
+import { useDispatch } from "react-redux"
 import * as y from "yup"
 
 export default function RegisterPassword() {
+    const { push } = useRouter()
+    const dispatch = useDispatch()
+
     const secondStepSchema = y.object({
         password: y.string().required("This is a mandatory field.").min(6, "Mustn't have less than 6 chars.").max(32, "Mustn't have more than 32 chars."),
         confirmPassword: y.string().required("This is a mandatory field.").equals([y.ref("password")], "Passwords should match."),
@@ -23,13 +28,12 @@ export default function RegisterPassword() {
         reValidateMode: "onSubmit"
     })
 
-    const { addPassword, addTermsStatus, data } = useContext(FormContext)
+    async function handleSubmit(formData: FormData) {
+        dispatch(set_agreeToTerms({agreed: formData.agreeToTerms}))
+        dispatch(set_password({password: formData.password}))
 
-    function handleSubmit(formData: FormData) {
-        addPassword(formData.password)
-        addTermsStatus(formData.agreeToTerms)
-
-        api.post("/accounts", data)
+        await createAccountAsync(formSelector(store.getState()))
+        push("/")
     }
 
     return (

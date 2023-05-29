@@ -1,15 +1,17 @@
 "use client"
 
-import { FormContext } from "@/contexts/formContext";
+import { set_email } from "@/reducer/features/form/reducer";
+import { formSelector } from "@/reducer/features/form/selectors";
+import { store } from "@/reducer/store";
 import { yupResolver } from "@hookform/resolvers/yup";
 import clsx from "clsx";
-import { useContext } from "react";
-import { useForm, FieldErrors } from "react-hook-form"
+import { useForm } from "react-hook-form"
+import { useDispatch } from "react-redux";
 import { useWizard } from "react-use-wizard";
 import * as y from "yup"
 
 export default function RegisterEmail() {
-    const { addEmail } = useContext(FormContext)
+    const dispatch = useDispatch()
     const { nextStep } = useWizard()
 
     const emailSchema = y.object({
@@ -25,7 +27,7 @@ export default function RegisterEmail() {
     })
 
     function handleSubmit(data: FormValues) {
-        addEmail(data.email);
+        dispatch(set_email({email: data.email}));
         nextStep();
     }
 

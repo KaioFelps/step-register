@@ -1,3 +1,4 @@
+import ReduxProvider from '@/reducer/provider'
 import './globals.css'
 import { Raleway } from 'next/font/google'
 
@@ -15,7 +16,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={raleway.className + "bg-zinc-200"}>{children}</body>
+      <body className={raleway.className + "bg-zinc-200"}>
+        <ReduxProvider>
+          {children}
+        </ReduxProvider>
+      </body>
     </html>
   )
 }
