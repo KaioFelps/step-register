@@ -1,6 +1,7 @@
 "use client"
 
 import { FormContext } from "@/contexts/formContext"
+import api from "@/libs/api"
 import { yupResolver } from "@hookform/resolvers/yup"
 import clsx from "clsx"
 import { useContext, useState } from "react"
@@ -22,13 +23,13 @@ export default function RegisterPassword() {
         reValidateMode: "onSubmit"
     })
 
-    const { addPassword, addTermsStatus, data: data1 } = useContext(FormContext)
+    const { addPassword, addTermsStatus, data } = useContext(FormContext)
 
-    function handleSubmit(data: FormData) {
-        addPassword(data.password)
-        addTermsStatus(data.agreeToTerms)
+    function handleSubmit(formData: FormData) {
+        addPassword(formData.password)
+        addTermsStatus(formData.agreeToTerms)
 
-        console.log(data1)
+        api.post("/accounts", data)
     }
 
     return (
